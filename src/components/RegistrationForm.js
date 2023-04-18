@@ -5,7 +5,8 @@ import Select from "react-select";
 
 function RegistrationForm() {
   var statusCode;
-  //multiselect options
+
+  //multi-select options
   const options = [
     { value: "node", label: "Node js" },
     { value: "react", label: "React js" },
@@ -14,13 +15,11 @@ function RegistrationForm() {
 
   //navigate between pages
   const navigate = useNavigate();
-
   function handleClick() {
     navigate("/LoginForm");
   }
 
   //Submit Form
-
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
@@ -31,6 +30,7 @@ function RegistrationForm() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [programmingSkills, setProgrammingSkills] = useState("");
   const [address, setAddress] = useState("");
+  const [qualification, setQualification] = useState("");
   const [firstNameError, setFirstNameError] = useState("");
   const [lastNameError, setLastNameError] = useState("");
   const [userNameError, setUserNameError] = useState("");
@@ -40,6 +40,7 @@ function RegistrationForm() {
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [addressError, setAddressError] = useState("");
+  const [qualificationError, setQualificationError] = useState("");
   const [error, setError] = useState("");
 
   const formData = {
@@ -52,6 +53,7 @@ function RegistrationForm() {
     password: password,
     confirmPassword: confirmPassword,
     programmingSkills: programmingSkills,
+    qualification: qualification,
     address: address,
   };
 
@@ -63,6 +65,12 @@ function RegistrationForm() {
   function validateContactNumber(contactNumber) {
     const regex = /^\d{10}$/;
     return regex.test(contactNumber);
+  }
+
+  function validatePassword(contactNumber) {
+    const regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return regex.test(password);
   }
 
   function handleFirstNameChange(e) {
@@ -132,13 +140,16 @@ function RegistrationForm() {
   }
 
   function handlePasswordChange(e) {
-    setPassword(e.target.value);
+    const password = e.target.value.trim();
+    setPassword(password);
 
-    if (e.target.value.length < 8) {
-      setPasswordError("*Password must be at least 8 characters long!");
-    } else {
-      setPasswordError("");
-    }
+    const passwordError =
+      password === ""
+        ? "*Password is required!"
+        : !validatePassword(password)
+        ? "*Please use Strong Password!"
+        : "";
+    setPasswordError(passwordError);
   }
 
   function handleConfirmPasswordChange(e) {
@@ -151,10 +162,9 @@ function RegistrationForm() {
     }
   }
   const handleSkillSelection = (event) => {
-    const skill = event[0].value;
-    console.log(event);
+    const skill = event;
     if (skill) {
-      setProgrammingSkills([...programmingSkills, skill]);
+      setProgrammingSkills(skill);
     } else {
       const updatedSkills = programmingSkills.filter((s) => s !== skill);
       setProgrammingSkills(updatedSkills);
@@ -171,8 +181,17 @@ function RegistrationForm() {
     }
   }
 
+  function handleQualificationChange(e) {
+    const { checked, value } = e.target;
+    if (checked) {
+      setQualification([...qualification, value]);
+    } else {
+      const updatedQualification = qualification.filter((q) => q !== value);
+      setQualification(updatedQualification);
+    }
+  }
+
   function handleSubmit(e) {
-    console.log(programmingSkills);
     e.preventDefault();
     if (!firstName) {
       setFirstNameError("*First Name is Required!");
@@ -200,6 +219,9 @@ function RegistrationForm() {
     }
     if (!address) {
       setAddressError("*Address is Required!");
+    }
+    if (!qualification) {
+      setQualificationError("*Select atleast one qualification!");
     } else {
       console.log("Form submitted");
       fetch("http://localhost:3434/loginPage", {
@@ -423,13 +445,28 @@ function RegistrationForm() {
           <input type="file" />
         </div>
         <div className="container">
-          <label>Qualification:</label>
-          <label>BCA</label>
-          <input type="checkbox" value="BCA" />
-          <label>MCA</label>
-          <input type="checkbox" value="MCA" />
-          <label>B.tech.</label>
-          <input type="checkbox" value="B.Tech." />
+          <div className="errorContainer">
+            <label>Qualification:</label>
+            <label>BCA</label>
+            <input
+              type="checkbox"
+              value="BCA"
+              onChange={handleQualificationChange}
+            />
+            <label>MCA</label>
+            <input
+              type="checkbox"
+              value="MCA"
+              onChange={handleQualificationChange}
+            />
+            <label>B.tech.</label>
+            <input
+              type="checkbox"
+              value="B.Tech."
+              onChange={handleQualificationChange}
+            />
+            <div className="errors">{qualificationError}</div>
+          </div>
         </div>
         <hr />
         <div className="errors">{error}</div>
