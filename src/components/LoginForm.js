@@ -24,6 +24,12 @@ function LoginForm() {
     return regex.test(email);
   }
 
+  function validatePassword(contactNumber) {
+    const regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return regex.test(password);
+  }
+
   function handleEmailChange(e) {
     const email = e.target.value.trim();
     setEmail(email);
@@ -38,13 +44,16 @@ function LoginForm() {
   }
 
   function handlePasswordChange(e) {
-    setPassword(e.target.value);
+    const password = e.target.value.trim();
+    setPassword(password);
 
-    if (e.target.value.length < 8) {
-      setPasswordError("Password must be at least 8 characters long");
-    } else {
-      setPasswordError("");
-    }
+    const passwordError =
+      password === ""
+        ? "*Password is required!"
+        : !validatePassword(password)
+        ? "*Password is not valid!"
+        : "";
+    setPasswordError(passwordError);
   }
 
   function handleSubmit(e) {
