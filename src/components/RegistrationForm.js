@@ -174,7 +174,7 @@ function RegistrationForm() {
   function handleAddressChange(e) {
     setAddress(e.target.value);
 
-    if (e.target.value.trim().length >= 50) {
+    if (e.target.value.trim().length >= 100) {
       setAddressError("*Address is too long!");
     } else {
       setAddressError("");
