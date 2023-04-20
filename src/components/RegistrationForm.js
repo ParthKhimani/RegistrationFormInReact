@@ -189,46 +189,56 @@ function RegistrationForm() {
     } else {
       const updatedQualification = qualification.filter((q) => q !== value);
       setQualification(updatedQualification);
-      console.log(updatedQualification);
-      if (updatedQualification.length == 0) {
-        setQualificationError("*Select atleast one Qualification!");
-      }
+      qualification.length == 0
+        ? setQualificationError("*Select atleast one Qualification!")
+        : setQualificationError("");
     }
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (!firstName) {
-      setFirstNameError("*First Name is Required!");
-    }
-    if (!lastName) {
-      setLastNameError("*Last Name is Required!");
-    }
-    if (!userName) {
-      setUserNameError("*User Name is Required!");
-    }
-    if (!contactNumber) {
-      setContactNumberError("*Contact Number is Required!");
-    }
-    if (!emailId) {
-      setEmailIdError("*Email Id is Required!");
-    }
-    if (!dateOfBirth) {
-      setDateOfBirthError("*Date Of Birth is Required!");
-    }
-    if (!password) {
-      setPasswordError("*Password is Required!");
-    }
-    if (!confirmPassword) {
-      setConfirmPasswordError("*Confirm Password is Required!");
-    }
-    if (!address) {
-      setAddressError("*Address is Required!");
-    }
-    if (!qualification) {
-      setQualificationError("*Select atleast one qualification!");
+    if (
+      !firstName ||
+      !lastName ||
+      !userName ||
+      !contactNumber ||
+      !emailId ||
+      !dateOfBirth ||
+      !password ||
+      !confirmPassword ||
+      !qualification
+    ) {
+      if (!firstName) {
+        setFirstNameError("*First Name is Required!");
+      }
+      if (!lastName) {
+        setLastNameError("*Last Name is Required!");
+      }
+      if (!userName) {
+        setUserNameError("*User Name is Required!");
+      }
+      if (!contactNumber) {
+        setContactNumberError("*Contact Number is Required!");
+      }
+      if (!emailId) {
+        setEmailIdError("*Email Id is Required!");
+      }
+      if (!dateOfBirth) {
+        setDateOfBirthError("*Date Of Birth is Required!");
+      }
+      if (!password) {
+        setPasswordError("*Password is Required!");
+      }
+      if (!confirmPassword) {
+        setConfirmPasswordError("*Confirm Password is Required!");
+      }
+      if (!address) {
+        setAddressError("*Address is Required!");
+      }
+      if (!qualification) {
+        setQualificationError("*Select atleast one qualification!");
+      }
     } else {
-      console.log("Form submitted");
       fetch("http://localhost:3434/loginPage", {
         method: "POST",
         headers: {
@@ -303,11 +313,7 @@ function RegistrationForm() {
           </div>
           <label>Email Id:</label>
           <div className="errorContainer">
-            <input
-              type="email"
-              value={emailId}
-              onChange={handleEmailIdChange}
-            />
+            <input type="text" value={emailId} onChange={handleEmailIdChange} />
             <div className="errors">{emailIdError}</div>
           </div>
         </div>
