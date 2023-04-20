@@ -185,9 +185,14 @@ function RegistrationForm() {
     const { checked, value } = e.target;
     if (checked) {
       setQualification([...qualification, value]);
+      setQualificationError("");
     } else {
       const updatedQualification = qualification.filter((q) => q !== value);
       setQualification(updatedQualification);
+      console.log(updatedQualification);
+      if (updatedQualification.length == 0) {
+        setQualificationError("*Select atleast one Qualification!");
+      }
     }
   }
 
