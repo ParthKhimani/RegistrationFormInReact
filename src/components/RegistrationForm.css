@@ -70,6 +70,10 @@ button:hover {
   color: rgb(43, 0, 83);
   cursor: pointer;
 }
+button:focus {
+  background-color: rgb(255, 255, 255);
+  color: rgb(43, 0, 83);
+}
 a {
   color: blue;
 }
